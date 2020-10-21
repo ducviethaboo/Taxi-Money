@@ -12,36 +12,35 @@
     <input type="text" name="kilometter" placeholder="Kilometter">
     <input type='submit' value="Pay">
 </form>
-    <?php
-    class differenceNumber extends Exception {}
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $km = $_REQUEST['kilometter'];
-        function checkKM($km)
-        {
-            if (is_numeric($km)) {
-                return true;
-            } else {
-                return false;
-            }
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $km = $_REQUEST['kilometter'];
+    function checkKM($km)
+    {
+        if (is_numeric($km)) {
+            return true;
+        } else {
+            return false;
         }
-
-        function calculateMoney($km)
-        {
-            if ($km > 0 && $km < 2) {
-                echo '<br>' . "Total : " . $km * 15000 . 'VND';
-            } elseif ($km > 1 && $km < 6) {
-                echo '<br>' . "Total : " . $km * 13500 . 'VND';
-            } elseif ($km >= 6 && $km < 120) {
-                echo '<br>' . "Total : " . $km * 11000 . 'VND';
-            } elseif ($km >= 120) {
-                echo '<br>' . "Total :" . $km * 11000 * 0.9 . 'VND';
-            } elseif ($km < 0 || checkKM($km) == false) {
-                echo '<br>' . "Please enter a valid number";
-            }
-        }
-
-        calculateMoney($km);
     }
-    ?>
+
+    function calculateMoney($km)
+    {
+        if ($km > 0 && $km <= 1) {
+            echo '<br>' . "Total : " . $km * 15000 . 'VND';
+        } elseif ($km > 1 && $km < 6) {
+            echo '<br>' . "Total : " . (($km - 1) * 13500 + 15000) . 'VND';
+        } elseif ($km >= 6 && $km < 120) {
+            echo '<br>' . "Total : " . (($km - 5) * 11000 + 15000 + (13500 * 4)) . 'VND';
+        } elseif ($km >= 120) {
+            echo '<br>' . "Total :" . (($km - 5) * 11000 * 0.9 + 15000 + (13500 * 4)) . 'VND';
+        } elseif ($km < 0 || checkKM($km) == false) {
+            echo '<br>' . "Please enter a valid number";
+        }
+    }
+
+    calculateMoney($km);
+}
+?>
 </body>
 </html>
